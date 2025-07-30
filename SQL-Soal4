@@ -1,0 +1,9 @@
+SELECT 
+    CASE 
+        WHEN DATE(k.tanggal_mulai_periksa) = DATE(k.tanggal_selesai_periksa) 
+             THEN 'Rawat Jalan'
+        ELSE 'Rawat Inap'
+    END AS jenis_perawatan,
+    COUNT(*) AS jumlah_kunjungan
+FROM `kawan-sehat-467506.tabel_analisa.tabel_kunjungan` k
+GROUP BY jenis_perawatan;
