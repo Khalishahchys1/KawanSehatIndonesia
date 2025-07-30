@@ -1,0 +1,10 @@
+SELECT 
+    r.ruangan,
+    COUNT(k.id_kunjungan) AS jumlah_kunjungan
+FROM `kawan-sehat-467506.tabel_analisa.tabel_kunjungan` k
+JOIN `kawan-sehat-467506.tabel_analisa.tabel_ruangan` r 
+    ON k.`ID Ruangan` = r.id_ruangan
+WHERE k.tanggal_jadwal_kunjungan 
+      BETWEEN '2024-05-06' AND '2024-05-10'
+GROUP BY r.ruangan
+ORDER BY jumlah_kunjungan DESC;
