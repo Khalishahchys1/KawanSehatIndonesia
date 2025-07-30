@@ -1,0 +1,10 @@
+SELECT 
+  r.ruangan,
+  AVG(k.umur__tahun_) AS rata_rata_usia
+FROM `kawan-sehat-467506.tabel_analisa.tabel_kunjungan` AS k
+JOIN `kawan-sehat-467506.tabel_analisa.tabel_ruangan` AS r 
+  ON k.`ID Ruangan` = r.id_ruangan
+WHERE k.status_kunjungan = 'SAKIT'
+  AND k.tanggal_jadwal_kunjungan BETWEEN '2023-05-02' AND '2023-05-06'
+GROUP BY r.ruangan
+ORDER BY r.ruangan;
