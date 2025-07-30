@@ -1,0 +1,20 @@
+WITH urut_kunjungan AS (
+  SELECT 
+    k.id_pasien,
+    r.ruangan,
+    k.tanggal_jadwal_kunjungan,
+    ROW_NUMBER() OVER(PARTITION BY k.id_pasien ORDER BY k.tanggal_jadwal_kunjungan ASC) AS rn_asc,
+    ROW_NUMBER() OVER(PARTITION BY k.id_pasien ORDER BY k.tanggal_jadwal_kunjungan DESC) AS rn_desc
+  FROM `kawan-sehat-467506.tabel_analisa.tabel_kunjungan` k
+  JOIN `kawan-sehat-467506.tabel_analisa.tabel_ruangan` r
+    ON k.`ID Ruangan` = r.id_ruangan
+)
+
+SELECT 
+  p.id_pasien,
+  MIN(CASE WHEN rn_asc = 1 THEN ruangan END) AS ruangan_pertama,
+  MIN(CASE WHEN rn_desc = 1 THEN ruangan END) AS ruangan_terakhir
+FROM `kawan-sehat-467506.tabel_analisa.tabel_pasien` p
+LEFT JOIN urut_kunjungan u ON p.id_pasien = u.id_pasien
+GROUP BY p.id_pasien
+ORDER BY p.id_pasien;
